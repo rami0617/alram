@@ -19,6 +19,12 @@ const alramDataReducer = createSlice({
       state.byIds[id].alramOn = "off";
     },
 
+    "alramOn": (state, action) => {
+      const id = action.payload;
+
+      state.byIds[id].alramOn = "on";
+    },
+
     "alramDelete": (state, action) => {
       const id = action.payload;
       const newState = Object.assign({}, state);
@@ -28,8 +34,8 @@ const alramDataReducer = createSlice({
       state.allIds = state.allIds.filter((alramId) => alramId !== id);
       state.byIds = newState.byIds;
     },
-  }
+  },
 });
 
-export const { alramAdd, alramOff, alramDelete } = alramDataReducer.actions;
+export const { alramAdd, alramOff, alramOn, alramDelete } = alramDataReducer.actions;
 export default alramDataReducer.reducer;

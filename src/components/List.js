@@ -32,15 +32,15 @@ export default function List({ onShowModal }) {
             <div className="head">
             <button onClick={handleModal}>X</button>
              </div>
-          <div className="alramMessage">
-            <div>1분 후에 창을 닫을 수 있습니다.</div>
-            {alramList.map((list) => (
-              list.id === now  &&
-             <div key={list.id}> {list.time} {list.description}할 시간입니다</div>
-            ))}
+            <div className="alramMessage">
+              <div>⏰1분 후에 창을 닫을 수 있습니다.</div>
+              {alramList.map((list) => (
+                list.id === now  &&
+               <div key={list.id}> {list.time} {list.description}할 시간입니다</div>
+              ))}
+            </div>
           </div>
-      </div>
-      </Modal>
+        </Modal>
       </ListModal>
     </div>
   );
@@ -59,7 +59,7 @@ const Modal = styled.div`
     width: 100%;
     height: 100%;
     padding: 16px;
-    background: rgb(251, 243, 220);
+    background: #f6fff8;
     border-radius: 10px;
   }
 
@@ -74,9 +74,12 @@ const Modal = styled.div`
   .alramMessage {
     display: grid;
     margin: 60px;
-    padding: 20px;
+    padding: 40px;
     grid-template-rows: 200px;
-    border: solid 2px;
+    border: 5px solid #cbdfbd ;
     border-radius: 10px;
+    font-family: 'Black Han Sans', sans-serif;
+    text-align: center;
+    font-size: 3vw;
   }
 `;
