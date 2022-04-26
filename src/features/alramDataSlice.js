@@ -9,7 +9,7 @@ const alramDataReducer = createSlice({
     "alramAdd": (state, action) => {
       const id  = action.payload.id;
 
-      state.allIds = state.allIds.concat(id);
+      state.allIds = state.allIds.concat(id).sort();
       state.byIds[id] = action.payload;
     },
 
