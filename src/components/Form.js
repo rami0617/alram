@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { format } from "date-fns";
 
 import { alramAdd } from "../features/alramDataSlice";
@@ -38,8 +37,7 @@ export default function Form() {
     event.preventDefault();
   };
 
-  const newDate = new Date();
-  const today = format(newDate, "yyyy-MM-dd");
+  const today = format(new Date(), "yyyy-MM-dd");
   const { date, time, clockMode, alramMode, description } = alramInfo;
 
   const handleAddAlram = (event) => {

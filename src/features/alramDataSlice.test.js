@@ -173,8 +173,6 @@ test("Make sure 'alramOn' runs", () => {
   });
 });
 
-
-
 test("Make sure 'alramDelete' runs", () => {
   const nowState = {
     allIds: ["202204261830", "202204272030"],
@@ -217,4 +215,3 @@ test("Make sure 'alramDelete' runs", () => {
     },
   });
 });
-

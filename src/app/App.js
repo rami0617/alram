@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Router, Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 
 import Alram  from "../components/Alram";
 import List from "../components/List";

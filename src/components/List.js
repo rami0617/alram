@@ -1,13 +1,14 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { format } from "date-fns";
 import PropTypes from "prop-types";
 
 import ListModal from "./ListModal";
+import { nowDays } from "../utils/utils";
 
 export default function List({ onShowModal }) {
   const state = useSelector((state) => state.alramData);
+  const now = nowDays();
 
   const handleModal = () => {
     onShowModal(false);
@@ -19,11 +20,6 @@ export default function List({ onShowModal }) {
       ...state.byIds[id],
     };
   });
-
-  const newDate = new Date();
-  const today = format(newDate, "yyyy/MM/dd");
-  const realTime = format(newDate, "HH:mm");
-  const now = (today + realTime).replace(/[^\w\s]/gi, '');
 
   return (
     <div>
