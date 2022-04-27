@@ -8,9 +8,12 @@ import { store } from "./app/store";
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router>
+    <React.StrictMode>
+      <Router>
         <App />
-    </Router>
+      </Router>
+    </React.StrictMode>
   </Provider>,
+
   document.getElementById("root")
 );

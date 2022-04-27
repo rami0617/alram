@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { format } from "date-fns";
+import PropTypes from "prop-types";
 
 import ListModal from "./ListModal";
 
@@ -46,6 +47,9 @@ export default function List({ onShowModal }) {
   );
 }
 
+List.propTypes = {
+  onShowModal: PropTypes.func.isRequired,
+};
 
 const Modal = styled.div`
   .modalBox {
