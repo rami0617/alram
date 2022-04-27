@@ -4,26 +4,18 @@ import styled from "styled-components";
 import { format } from "date-fns";
 import PropTypes from "prop-types";
 
-import {
-  alramAdd,
-  alramOff,
-  alramOn,
-  alramDelete,
-} from "../features/alramDataSlice";
+import Form from "../components/Form";
+import { alramOff, alramOn, alramDelete } from "../features/alramDataSlice";
 
 export default function Alram({ onShowModal }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.alramData);
   const [nowTime, setNowTime] = useState(new Date());
-  const [alramInfo, setAlramInfo] = useState({
-    id: "",
-    date: "",
-    time: "",
-    clockMode: "",
-    alramMode: "",
-    description: "",
-    alramOn: "on",
-  });
+
+  const newDate = new Date();
+  const today = format(newDate, "yyyy-MM-dd");
+  const realTime = format(newDate, "HH:mm");
+  const now = (today + realTime).replace(/[^\w\s]/gi, "");
 
   useEffect(() => {
     setInterval(() => {
@@ -31,42 +23,7 @@ export default function Alram({ onShowModal }) {
     }, 1000);
   }, []);
 
-  const handleSubmit = (event) => {
-    if (!alramInfo.alramMode || !alramInfo.clockMode) {
-      alert("선택해서 다시 제출해주세요");
-    } else {
-      dispatch(alramAdd(alramInfo));
-
-      setAlramInfo({
-        id: "",
-        date: "",
-        time: "",
-        clockMode: "",
-        alramMode: "",
-        description: "",
-        alramOn: "on",
-      });
-    }
-
-    event.preventDefault();
-  };
-
-  const newDate = new Date();
-  const today = format(newDate, "yyyy-MM-dd");
-  const realTime = format(newDate, "HH:mm");
-  const now = (today + realTime).replace(/[^\w\s]/gi, "");
-  const { date, time, clockMode, alramMode, description } = alramInfo;
-
-  const handleAddAlram = (event) => {
-    const { name, value } = event.target;
-    const id = (date + time).replace(/[^\w\s]/gi, "");
-
-    setAlramInfo({
-      ...alramInfo,
-      [name]: value,
-      id: id,
-    });
-  };
+  const weekOfday = format(newDate, 'EEEE');
 
   const alramList = state.allIds.map((id) => {
     return {
@@ -85,7 +42,7 @@ export default function Alram({ onShowModal }) {
     <div>
       <Main>
         <div className="nowtime">
-          {nowTime.toLocaleDateString()} {nowTime.toLocaleTimeString()}
+          {nowTime.toLocaleDateString()}{"  "}{weekOfday}{"  "}{nowTime.toLocaleTimeString()}
         </div>
         <div className="addAlram">
           <div>✨알람등록</div>
@@ -97,62 +54,7 @@ export default function Alram({ onShowModal }) {
             시계모드에서 "진동" + 알람모드에서 "긴급"을 선택할 경우 알람이
             울리는 동안 창을 끌 수 없습니다.
           </div>
-          <form className="alramForm" onSubmit={handleSubmit}>
-            <div>
-              ✨시계모드:
-              <select
-                name="clockMode"
-                value={clockMode}
-                onChange={handleAddAlram}
-              >
-                <option value="default">-----</option>
-                <option value="normal">일반</option>
-                <option value="vibration">진동</option>
-                <option value="night">야간</option>
-              </select>
-            </div>
-            <div>
-              ✨시간설정:
-              <input
-                type="date"
-                name="date"
-                value={date}
-                onChange={handleAddAlram}
-                min={today}
-                required
-              />
-            </div>
-            <div>
-              ✨알람모드:
-              <select
-                name="alramMode"
-                value={alramMode}
-                onChange={handleAddAlram}
-              >
-                <option>-----</option>
-                <option value="normal">일반</option>
-                <option value="emergency">긴급</option>
-              </select>
-              <input
-                type="time"
-                name="time"
-                value={time}
-                onChange={handleAddAlram}
-                required
-              />
-            </div>
-            <div>
-              ✨내용:
-              <input
-                type="text"
-                name="description"
-                value={description}
-                onChange={handleAddAlram}
-                required
-              />
-              <input type="submit" value="내용추가" />
-            </div>
-          </form>
+          <Form />
         </div>
         <div className="alramList">
           <div className="bookedAlram">
@@ -161,7 +63,7 @@ export default function Alram({ onShowModal }) {
               <li key={list.id}>
                 {list.alramOn === "on" && (
                   <div className="alramOn">
-                    {list.date}{" "}{list.time}{" "}{list.description}
+                    {list.date} {list.time} {list.description}
                     <button onClick={() => dispatch(alramOff(list.id))}>
                       끄기
                     </button>
@@ -178,10 +80,10 @@ export default function Alram({ onShowModal }) {
             {alramList.map((list) => (
               <li key={list.id}>
                 {list.alramOn === "off" && (
-                  <div className="alramOff" >
-                    {list.date}{" "}{list.time}{" "}{list.description}
+                  <div className="alramOff">
+                    {list.date} {list.time} {list.description}
                     <button onClick={() => dispatch(alramOn(list.id))}>
-                      알람 키기
+                      알람 켜기
                     </button>
                   </div>
                 )}
@@ -194,7 +96,11 @@ export default function Alram({ onShowModal }) {
               <div key={list.id}>
                 <span>
                   {list.id === now && (
-                    <div>{list.time}{"  "}{list.description}</div>
+                    <div>
+                      {list.time}
+                      {"  "}
+                      {list.description}
+                    </div>
                   )}
                 </span>
               </div>
@@ -243,6 +149,7 @@ const Main = styled.div`
       border-bottom: 2px solid;
       list-style: none;
     }
+
     .turnoffAlram {
       border-bottom: 2px solid;
       list-style: none;
