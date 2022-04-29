@@ -1,17 +1,20 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import ListModal from "./ListModal";
 import { nowDays } from "../utils/utils";
+import { alramOff } from "../features/alramDataSlice";
 
 export default function List({ onShowModal }) {
   const state = useSelector((state) => state.alramData);
   const now = nowDays();
+  const dispatch = useDispatch();
 
   const handleModal = () => {
     onShowModal(false);
+    dispatch(alramOff(now));
   };
 
   const alramList = state.allIds.map((id) => {
@@ -28,12 +31,12 @@ export default function List({ onShowModal }) {
           <div className="modalBox">
             <div className="head">
             <button onClick={handleModal}>X</button>
-             </div>
+            </div>
             <div className="alramMessage">
               <div>⏰1분 후에 창을 닫을 수 있습니다.</div>
               {alramList.map((list) => (
                 list.id === now  &&
-               <div key={list.id}> {list.time} {list.description}할 시간입니다</div>
+              <div key={list.id}> {list.time} {list.description}할 시간입니다</div>
               ))}
             </div>
           </div>

@@ -20,12 +20,12 @@ export default function Button({ onClick, children, variant }) {
   const variantStyle = VARIANTS[variant];
 
   return (
-   <StyledButton
-     onClick={onClick}
-     variantStyle={variantStyle}
+  <StyledButton
+    onClick={onClick}
+    variantStyle={variantStyle}
     >
-     {children}
-   </StyledButton>
+    {children}
+  </StyledButton>
   );
 }
 

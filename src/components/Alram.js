@@ -2,19 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { format } from "date-fns";
-import PropTypes from "prop-types";
 
+import List from "./List";
 import Form from "../components/Form";
 import { alramOff, alramOn, alramDelete } from "../features/alramDataSlice";
 import Button from "../components/common/Button";
 import { nowDays } from "../utils/utils";
 
-export default function Alram({ onShowModal }) {
+export default function Alram() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.alramData);
   const [nowTime, setNowTime] = useState(new Date());
-  const weekOfday = format(new Date(), 'EEEE');
+  const weekOfday = format(new Date(), "EEEE");
   const now = nowDays();
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     setInterval(() => {
@@ -29,12 +30,6 @@ export default function Alram({ onShowModal }) {
     };
   });
 
-  for (let i = 0; i < alramList.length; i++) {
-    if (alramList[i].id === now && alramList[i].clockMode === "vibration") {
-      onShowModal(true);
-    }
-  }
-
   return (
     <Main>
       <div className="nowtime">
@@ -47,12 +42,7 @@ export default function Alram({ onShowModal }) {
       <div className="addAlram">
         <div>✨알람등록</div>
         <div>
-          시계모드에서 "진동" + 알람모드에서 "일반"을 선택할 경우 알람이 울리는
-          동안 창을 끌 수 없습니다.
-        </div>
-        <div>
-          시계모드에서 "진동" + 알람모드에서 "긴급"을 선택할 경우 알람이 울리는
-          동안 창을 끌 수 없습니다.
+          시계모드에서 "진동"을 선택할 경우 알람이 울릴 때 새로운 창으로 알려줍니다.
         </div>
         <Form />
       </div>
@@ -101,11 +91,12 @@ export default function Alram({ onShowModal }) {
           {alramList.map((list) => (
             <li key={list.id}>
               <span>
-                {list.id === now && (
+                {list.id === now && list.alramOn === "on" && (
                   <div>
                     {list.time}
                     {"  "}
                     {list.description}
+                    {list.clockMode === "vibration" && <List onShowModal={setShowModal} />}
                   </div>
                 )}
               </span>
@@ -116,10 +107,6 @@ export default function Alram({ onShowModal }) {
     </Main>
   );
 }
-
-Alram.propTypes = {
-  onShowModal: PropTypes.func.isRequired,
-};
 
 const Main = styled.div`
   display: grid;
@@ -158,17 +145,20 @@ const Main = styled.div`
       padding: 20px;
       border-bottom: 2px solid;
       list-style: none;
+      overflow-y: auto;
     }
 
     .turnoffAlram {
       padding: 20px;
       border-bottom: 2px solid;
       list-style: none;
+      overflow-y: auto;
     }
 
     .messageInfo {
       padding: 20px;
       list-style: none;
+      overflow-y: auto;
     }
   }
 `;
